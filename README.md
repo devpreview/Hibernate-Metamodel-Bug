@@ -21,3 +21,5 @@ Run with --stacktrace option to get the stack trace. Run with --info or --debug 
 BUILD FAILED in 0s
 1 actionable task: 1 executed
 ```
+
+See issue: https://hibernate.atlassian.net/browse/HHH-12030
