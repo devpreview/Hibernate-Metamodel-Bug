@@ -1,0 +1,39 @@
+group 'org.hibernate'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+configurations {
+    generateJpaMetaModel {}
+}
+
+sourceSets {
+    generated {
+        compileClasspath += configurations.compile
+    }
+}
+
+task generateJpaMetaModel(type: JavaCompile) {
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor"
+    ]
+    source = sourceSets.main.java.srcDirs + sourceSets.main.java.srcDirs
+    classpath = sourceSets.generated.compileClasspath + configurations.generateJpaMetaModel
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileJava {
+    dependsOn generateJpaMetaModel
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    generateJpaMetaModel group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.2.11.Final'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.11.Final'
+}
